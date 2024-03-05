@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovementSC : MonoBehaviour
 {
-    
+    public Animator characterAnimator;
+
     Vector2 moveVector;
     public float moveSpeed = 8f;
 
@@ -34,6 +35,14 @@ public class PlayerMovementSC : MonoBehaviour
         Vector3 movement = new Vector3(moveVector.x, 0, moveVector.y);
         movement.Normalize();
         transform.Translate(moveSpeed * movement * Time.deltaTime);
+
+        float rotationAngle = Mathf.Atan2(moveVector.x, moveVector.y) * Mathf.Rad2Deg;
+        transform.GetChild(1).rotation = Quaternion.Euler(0, rotationAngle, 0);
+        if (movement.magnitude > 0)
+            characterAnimator.SetBool("isWalk", true);
+        else
+            characterAnimator.SetBool("isWalk", false);
+
         transform.Rotate(Vector3.forward, rotationInput * rotationSpeed * Time.deltaTime);
 
     }
@@ -52,6 +61,7 @@ public class PlayerMovementSC : MonoBehaviour
         if (!isJumping && Time.time >= jumpTimer)
         {
             isJumping = true;
+            characterAnimator.SetTrigger("isJumping");
             jumpTimer = Time.time + jumpCooldown;
             GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }

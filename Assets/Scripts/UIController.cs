@@ -22,6 +22,7 @@ public class UIController : MonoBehaviour
         Application.Quit();
     }
 
+
     public void GetActiveScene_Reload()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

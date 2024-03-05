@@ -9,6 +9,7 @@ public class DeathController : MonoBehaviour
     private TimeController tc = new TimeController();
     [SerializeField]
     protected GameObject tryAgainScene;
+    public Animator characterAnimator;
 
     private void Start()
     {
@@ -18,12 +19,19 @@ public class DeathController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.TryGetComponent(out PlayerMovementSC pmsc))
+        if(other.gameObject.TryGetComponent(out PlayerBody pmsc))
         {
+            characterAnimator.SetTrigger("isLoose");
+            StartCoroutine(WaitUntilAnimationEnd());
             Time.timeScale = 0;
             tryAgainScene.SetActive(true);
             SavePlayerProgress();
         }
+    }
+
+    IEnumerator WaitUntilAnimationEnd()
+    {
+        yield return new WaitForSeconds(200f);
     }
 
     private void SavePlayerProgress()
