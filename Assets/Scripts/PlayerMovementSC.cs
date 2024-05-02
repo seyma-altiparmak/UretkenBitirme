@@ -18,7 +18,11 @@ public class PlayerMovementSC : MonoBehaviour
     private float jumpCooldown = 0.5f;
     private float jumpTimer = 0f;
 
-   
+    private void Start()
+    {
+        characterAnimator = GetComponentInChildren<Animator>();
+    }
+
     public void InputPlayer(InputAction.CallbackContext _context)
     {
         moveVector = _context.ReadValue<Vector2>();
